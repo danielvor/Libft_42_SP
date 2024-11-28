@@ -61,28 +61,38 @@ static char	**free_tokens(char **tokens, size_t count)
 
 char	**ft_split(char const *s, char c)
 {
-	size_t		i;
-	size_t		j;
-	char		**token_vector;
+    size_t		i;            // Índice para percorrer a string s
+    size_t		j;            // Índice para percorrer o vetor de tokens
+    char		**token_vector; // Ponteiro para o vetor de tokens
 
-	if (!s)
-		return (NULL);
-	token_vector = malloc((count_tokens(s, c) + 1) * sizeof(char *));
-	if (token_vector == NULL)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (s[i])
-	{
-		while (s[i] == c)
-			i++;
-		if (s[i] == '\0')
-			break ;
-		token_vector[j] = get_word(s, &i, c);
-		if (!token_vector[j])
-			return (free_tokens(token_vector, j));
-		j++;
-	}
-	token_vector[j] = NULL;
-	return (token_vector);
+    // Se a string s for NULL, retorna NULL
+    if (!s)
+        return (NULL);
+    // Aloca memória para o vetor de tokens, com espaço para todos os tokens mais um NULL no final
+    token_vector = malloc((count_tokens(s, c) + 1) * sizeof(char *));
+    // Se a alocação falhar, retorna NULL
+    if (token_vector == NULL)
+        return (NULL);
+    i = 0;
+    j = 0;
+    // Percorre a string s
+    while (s[i])
+    {
+        // Ignora os caracteres delimitadores
+        while (s[i] == c)
+            i++;
+        // Se chegar ao final da string, sai do loop
+        if (s[i] == '\0')
+            break ;
+        // Obtém a próxima palavra e armazena no vetor de tokens
+        token_vector[j] = get_word(s, &i, c);
+        // Se a obtenção da palavra falhar, libera a memória alocada e retorna NULL
+        if (!token_vector[j])
+            return (free_tokens(token_vector, j));
+        j++;
+    }
+    // Define o último elemento do vetor de tokens como NULL
+    token_vector[j] = NULL;
+    // Retorna o vetor de tokens
+    return (token_vector);
 }
